@@ -1,3 +1,49 @@
 package com.ganesh.fund;
-import org.springframework.beans.factory.annotation.Value;import org.springframework.security.crypto.password.PasswordEncoder;import org.springframework.web.bind.annotation.*;import java.util.Map;
-@RestController @RequestMapping("/api/auth") @CrossOrigin public class AuthController { private final UserRepository users;private final PasswordEncoder enc;private final JwtService jwt;private final String configured;AuthController(UserRepository u,PasswordEncoder e,JwtService j,@Value("${app.admin.username}")String configured){users=u;enc=e;jwt=j;this.configured=configured;} @PostMapping("/login") public Map<String,String> login(@RequestBody Map<String,String> body){String u=body.get("username"),p=body.get("password");var user=users.findByUsername(u).orElse(null);if(user==null||!user.username.equals(configured)||!enc.matches(p,user.password))throw new RuntimeException("Invalid username or password");return Map.of("token",jwt.token(u),"role","ADMIN");}}
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/auth")
+@CrossOrigin
+public class AuthController {
+
+    private final UserRepository users;
+    private final PasswordEncoder enc;
+    private final String configured;
+
+    AuthController(
+            UserRepository u,
+            PasswordEncoder e,
+            @Value("${app.admin.username}") String configured) {
+
+        users = u;
+        enc = e;
+        this.configured = configured;
+    }
+
+    @PostMapping("/login")
+    public Map<String, String> login(
+            @RequestBody Map<String, String> body) {
+
+        String u = body.get("username");
+        String p = body.get("password");
+
+        var user = users.findByUsername(u).orElse(null);
+
+        if (user == null
+                || !user.username.equals(configured)
+                || !enc.matches(p, user.password)) {
+
+            throw new RuntimeException("Invalid username or password");
+        }
+
+        return Map.of(
+                "role", "ADMIN",
+                "username", u
+        );
+    }
+}
