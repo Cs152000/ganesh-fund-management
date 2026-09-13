@@ -1,0 +1,4 @@
+import React from 'react';
+import { Download, FileText } from 'lucide-react';
+import { money } from '../utils';
+export default function PDFCenter({ transactions, onReceipt, onReport }) { return <><div className="page-title"><div><h2>PDF Center</h2><p>Generate receipts and complete fund reports.</p></div><button className="primary" onClick={()=>onReport('all')}><Download/> Full Report</button></div><section className="card table-card"><div className="card-title"><h3>Receipt Generator</h3><small>Download a PDF for any transaction</small></div><div className="receipt-grid">{transactions.slice().reverse().map(t=><div className="receipt-item" key={t.id}><div><b>{t.person}</b><small>{t.date} • {t.description}</small></div><strong className={t.type==='add'?'positive':'negative'}>{money(t.amount)}</strong><button onClick={()=>onReceipt(t)}><FileText size={16}/> PDF</button></div>)}</div></section></>; }

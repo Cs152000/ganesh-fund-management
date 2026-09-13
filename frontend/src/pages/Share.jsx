@@ -1,0 +1,3 @@
+import { MessageCircle } from 'lucide-react';
+import { money } from '../utils';
+export default function Share({ totals, settings, onShare }) { return <div className="center-page"><div className="share-card card"><MessageCircle size={52}/><h2>Share Fund Status</h2><p>Send the latest fund summary to your Ganesh Chaturthi WhatsApp group.</p><div className="share-preview"><b>{settings.committeeName}</b><span>Total Added: {money(totals.added)}</span><span>Total Withdrawn: {money(totals.withdrawn)}</span><strong>Current Balance: {money(totals.balance)}</strong></div><button className="whatsapp" onClick={onShare}><MessageCircle/> Share on WhatsApp</button></div></div>; }

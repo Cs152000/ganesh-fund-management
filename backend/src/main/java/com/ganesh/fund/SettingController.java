@@ -1,0 +1,2 @@
+package com.ganesh.fund;import org.springframework.web.bind.annotation.*;import java.util.*;
+@RestController @RequestMapping("/api/settings") @CrossOrigin public class SettingController {final SettingRepository r;SettingController(SettingRepository x){r=x;}@GetMapping public Setting get(){return r.findById(1L).orElseGet(()->r.save(new Setting("Sri Ganesh Chaturthi Committee","2026")));}@PutMapping public Setting put(@RequestBody Setting s){s.id=1L;return r.save(s);}}

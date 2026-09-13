@@ -1,0 +1,2 @@
+package com.ganesh.fund;import org.springframework.web.bind.annotation.*;import java.util.*;
+@RestController @RequestMapping("/api/members") @CrossOrigin public class MemberController {final MemberRepository r;MemberController(MemberRepository x){r=x;}@GetMapping public List<Member> all(){return r.findAllByOrderByIdAsc();}@PostMapping public Member add(@RequestBody Member m){return r.save(m);}@DeleteMapping("/{id}")public void del(@PathVariable Long id){r.deleteById(id);}}
